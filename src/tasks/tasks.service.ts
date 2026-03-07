@@ -13,7 +13,7 @@ export class TasksService {
     private tasksRepository: Repository<Task>,
   ) {}
 
-  async create(createTaskDto: CreateTaskDto): Task {
+  async create(createTaskDto: CreateTaskDto): Promise<Task> {
     const newTask = this.tasksRepository.create(createTaskDto);
     return await this.tasksRepository.save(newTask);
   }
