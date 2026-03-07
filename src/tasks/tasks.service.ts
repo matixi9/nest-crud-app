@@ -2,48 +2,43 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TasksService {
 
-  private tasks: Task[] = [];
-  private idCounter: number = 1;
+  constructor(
+    @InjectRepository(Task)
+    private tasksRepository: Repository<Task>,
+  ) {}
 
-  create(createTaskDto: CreateTaskDto): Task {
-    const newTask: Task = {
-      id: this.idCounter++,
-      title: createTaskDto.title,
-      description: createTaskDto.description,
-      isCompleted: false
-    }
-    this.tasks.push(newTask);
-    return newTask;
+  async create(createTaskDto: CreateTaskDto): Task {
+    const newTask = this.tasksRepository.create(createTaskDto);
+    return await this.tasksRepository.save(newTask);
   }
 
-  findAll(): Task[] {
-    return this.tasks;
+  async findAll(): Promise<Task[]> {
+    return await this.tasksRepository.find();
   }
 
-  findOne(id: number): Task {
-    const task = this.tasks.find(t => t.id === id)
+  async findOne(id: number): Promise<Task> {
+    const task = await this.tasksRepository.findOneBy({id});
     if (!task) {
       throw new NotFoundException('Nie znaleziono zadanie o danym ID');
     }
     return task;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto): Task {
-    const task = this.findOne(id);
-    const updatedTask = {
-      ...task, ...UpdateTaskDto
-    }
+  async update(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
+    const task = await this.findOne(id);
+    const updatedTask = this.tasksRepository.merge(task, updateTaskDto);
 
-    this.tasks = this.tasks.map(t => (t.id === id ? updatedTask : t));
-    return updatedTask;
+    return await this.tasksRepository.save(updatedTask);
   }
 
-  remove(id: number): void {
-    const task = this.findOne(id);
-    this.tasks = this.tasks.filter(t => t.id !== id)
+  async remove(id: number): Promise<void> {
+    const task = await this.findOne(id);
+    await this.tasksRepository.remove(task);
   }
 }
