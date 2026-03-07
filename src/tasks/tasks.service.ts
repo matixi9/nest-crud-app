@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
@@ -24,15 +24,26 @@ export class TasksService {
     return this.tasks;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  findOne(id: number): Task {
+    const task = this.tasks.find(t => t.id === id)
+    if (!task) {
+      throw new NotFoundException('Nie znaleziono zadanie o danym ID');
+    }
+    return task;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  update(id: number, updateTaskDto: UpdateTaskDto): Task {
+    const task = this.findOne(id);
+    const updatedTask = {
+      ...task, ...updateTaskDto
+    }
+
+    this.tasks = this.tasks.map(t => (t.id === id ? updatedTask : t));
+    return updatedTask;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  remove(id: number): void {
+    const task = this.findOne(id);
+    this.tasks = this.tasks.filter(t => t.id !== id)
   }
 }
