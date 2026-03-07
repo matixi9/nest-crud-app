@@ -35,7 +35,7 @@ export class TasksService {
   update(id: number, updateTaskDto: UpdateTaskDto): Task {
     const task = this.findOne(id);
     const updatedTask = {
-      ...task, ...updateTaskDto
+      ...task, ...UpdateTaskDto
     }
 
     this.tasks = this.tasks.map(t => (t.id === id ? updatedTask : t));
