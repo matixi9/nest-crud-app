@@ -9,12 +9,19 @@ export class TasksService {
   private tasks: Task[] = [];
   private idCounter: number = 1;
 
-  create(createTaskDto: CreateTaskDto) {
-    return 'This action adds a new task';
+  create(createTaskDto: CreateTaskDto): Task {
+    const newTask: Task = {
+      id: this.idCounter++,
+      title: createTaskDto.title,
+      description: createTaskDto.description,
+      isCompleted: false
+    }
+    this.tasks.push(newTask);
+    return newTask;
   }
 
-  findAll() {
-    return `This action returns all tasks`;
+  findAll(): Task[] {
+    return this.tasks;
   }
 
   findOne(id: number) {
