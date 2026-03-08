@@ -1,7 +1,7 @@
-# Task Management System (NestJS API)
+# NestJS CRUD API
 
 ## 1. Application Topic
-The application is a server-side CRUD API created with **NestJS** and **TypeORM**. It provides a complete set of endpoints for managing tasks. It utilizes a **PostgreSQL** database running in a Docker container for data persistence.
+**Simple CRUD API in TypeScript with NestJs for learning purposes.** The application provides a complete set of endpoints for managing tasks and utilizes a **PostgreSQL** database running in a Docker container for data persistence.
 
 **Main Functionalities:**
 * Accepting task creation requests.
@@ -19,7 +19,7 @@ The application is a server-side CRUD API created with **NestJS** and **TypeORM*
     * `title` (String) - the title of the task.
     * `description` (String) - detailed description of the task.
 
-2.  **Task (Entity / Offer):** Database entity and output object containing:
+2.  **Task (Entity):** Database entity and output object containing:
     * `id` (int) - unique identifier, auto-generated Primary Column.
     * `title` (String) - the title of the task.
     * `description` (String) - detailed description of the task.
