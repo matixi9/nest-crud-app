@@ -1,10 +1,10 @@
 {
-  "name": "nest-crud-app",
+  "name": "nestjs-crud-api",
   "version": "0.0.1",
-  "description": "",
+  "description": "Simple CRUD API in TypeScript with NestJs for learning purposes",
   "author": "",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
